@@ -7,36 +7,40 @@ def read_cue_card(line):
     while line[x] != "/": #a.k.a before the separator "/" has appeared
         front += line[x]
         x += 1
-        #is_front = separator(line[x])
-    print("Front of cue card: " + front)
-    next = input("When ready to see back of cue card, press Enter")
     back = ""
     x += 1
     while x < len(line): #output the rest of the line
         back += line[x]
         x += 1
-    print("Back of cue card is: " + back)
-    next = input("When ready to see next cue card, press Enter, or to exit press 'X'")
-    return True if next == "X" or next == "x" else False;
+    return front, back
 
 
-def first_menu_choice():
-    topic_name = input("Enter name (filename) of first set of cuecards: ")
+def read_cuecard_set():
+    topic_name = input("Enter name of first set of cuecards: ")
+    topic_name = topic_name + ".txt"
     topic = open(topic_name,'r') #opens the file of cue cards relating to topic to read
     lines = topic.readlines()   #creates a list containing each line in the file
     end = False
     while len(lines) > 0 and not end:    #while there is still lines to be read
         line = lines[random.randint(0,len(lines)-1)]  #randomly select a line
-        end = read_cue_card(line)
-        lines.remove(line)
+        front,back = read_cue_card(line)
+        print("Front of cue card: " + front)
+        cont = input("When ready to see back of cue card, press Enter")
+        print("Back of cue card is: " + back)
+        cont = input("When ready to continue, press Enter, or to exit press 'X'")
+        if cont == "X" or cont == "x":
+            break
+        else:
+            lines.remove(line)
     print("Cue Card Reading has Finished")
+    topic.close()
     return
 
 
-def second_menu_choice():
-    filename = input("Please enter the Topic Name: ")
-    filename = filename + ".txt"
-    file = open(filename,"w")
+def add_cuecards(edit_type):
+    topic_name = input("Please enter the Topic Name: ")
+    topic_name = topic_name + ".txt"
+    topic = open(topic_name, edit_type)
     numcards = int(input("How many cuecards do you want to add? "))
     numcardsleft = numcards
     end = False
@@ -48,31 +52,34 @@ def second_menu_choice():
         correct = input()
         if correct == "Y" or correct == "y":
             numcardsleft -= 1
-            file.write(cuecard + '\n')
+            topic.write(cuecard + '\n')
         elif correct == "N" or correct == "n":
             print("Enter the cue card again...")
         else:
             end = True
     print("Cue Card set finished.")
+    topic.close()
     return
+        
     
+
 
 def main_menu():
     print("Select command from following list by entering the associated number/letter:")
     print("     1. Read a set of cuecards")
-    print("     2. Add a set of cuecards")
-    print("     3. Edit a set of cuecards")
+    print("     2. Add a new set of cuecards")
+    print("     3. Add to an existing set of cuecards")
     print("     4. Delete a set of cuecards")
     print("     X. Exit program")
     menu_choice = input()
     if menu_choice == "1":
-        first_menu_choice()
+        read_cuecard_set()
         main_menu()
     elif menu_choice == "2":
-        second_menu_choice()
+        add_cuecards("w")
         main_menu()
     elif menu_choice == "3":
-        print("Not a valid option at this time as program is still being developed. Please try again.")
+        add_cuecards("a")
         main_menu()
     elif menu_choice == "4":
         print("Not a valid option at this time as program is still being developed. Please try again.")
