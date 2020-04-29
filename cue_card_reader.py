@@ -32,6 +32,31 @@ def first_menu_choice():
     print("Cue Card Reading has Finished")
     return
 
+
+def second_menu_choice():
+    filename = input("Please enter the Topic Name: ")
+    filename = filename + ".txt"
+    file = open(filename,"w")
+    numcards = int(input("How many cuecards do you want to add? "))
+    numcardsleft = numcards
+    end = False
+    while numcardsleft > 0 and not end:
+        front = input("Enter the front of the cue card: ")
+        back = input("Enter the back of the cue card: ")
+        cuecard = front + "/" + back
+        print("The cue card looks like this: '" + cuecard + "' is this correct? Y/N, or any other key to finish adding cuecards early.")
+        correct = input()
+        if correct == "Y" or correct == "y":
+            numcardsleft -= 1
+            file.write(cuecard + '\n')
+        elif correct == "N" or correct == "n":
+            print("Enter the cue card again...")
+        else:
+            end = True
+    print("Cue Card set finished.")
+    return
+    
+
 def main_menu():
     print("Select command from following list by entering the associated number/letter:")
     print("     1. Read a set of cuecards")
@@ -44,7 +69,7 @@ def main_menu():
         first_menu_choice()
         main_menu()
     elif menu_choice == "2":
-        print("Not a valid option at this time as program is still being developed. Please try again.")
+        second_menu_choice()
         main_menu()
     elif menu_choice == "3":
         print("Not a valid option at this time as program is still being developed. Please try again.")
