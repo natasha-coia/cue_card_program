@@ -1,4 +1,5 @@
 import random
+import os
 
 def read_cue_card(line):
     front = ""
@@ -62,7 +63,12 @@ def add_cuecards(edit_type):
     return
         
     
-
+def delete_set():
+    topic_name = input("Please enter the Topic to be deleted: ")
+    topic_name = topic_name + ".txt"
+    os.remove(topic_name)
+    print("\n" + topic_name + " has been deleted.\n")
+    return
 
 def main_menu():
     print("Select command from following list by entering the associated number/letter:")
@@ -82,7 +88,7 @@ def main_menu():
         add_cuecards("a")
         main_menu()
     elif menu_choice == "4":
-        print("Not a valid option at this time as program is still being developed. Please try again.")
+        delete_set()
         main_menu()
     elif menu_choice == "X" or menu_choice == "x":
         print("Thank you for using this program")
