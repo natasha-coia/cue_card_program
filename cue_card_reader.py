@@ -18,10 +18,10 @@ def read_cue_card(line):
 
 def read_cuecard_set(topics):
     topic_name = input("Enter name of first set of cuecards: ")
+    topic_name = topic_name + ".txt"
     if topic_name not in topics:
         print("Invalid topic name.")
         return
-    topic_name = topic_name + ".txt"
     topic = open(topic_name,'r') #opens the file of cue cards relating to topic to read
     lines = topic.readlines()   #creates a list containing each line in the file
     end = False
@@ -43,12 +43,12 @@ def read_cuecard_set(topics):
 
 def add_cuecards(topics, edit_type):
     topic_name = input("Please enter the Topic Name: ")
+    topic_name = topic_name + ".txt"
     if topic_name not in topics and edit_type == "a":
         print("Invalid topic name.")
         return
     elif topic_name not in topics and edit_type == "w":
         topics.append(topic_name)
-    topic_name = topic_name + ".txt"
     topic = open(topic_name, edit_type)
     numcards = int(input("How many cuecards do you want to add? "))
     numcardsleft = numcards
@@ -72,10 +72,10 @@ def add_cuecards(topics, edit_type):
     
 def delete_set(topics):
     topic_name = input("Please enter the Topic to be deleted: ")
+    topic_name = topic_name + ".txt"
     if topic_name not in topics:
         print("Invalid topic name.")
         return
-    topic_name = topic_name + ".txt"
     os.remove(topic_name)
     topics.remove(topic_name)
     print("\n" + topic_name + " has been deleted.\n")
@@ -118,5 +118,8 @@ def main_menu(topics):
         print("The option you entered was invalid, please try again:")
         main_menu(topics)
 
-topics = ["topic01","topic02"]
+topics = os.listdir("C:\\Users\\ncoia\\Documents\\University\\cue_card_program")
+topics.remove("LICENSE")
+topics.remove(".git")
+topics.remove("cue_card_reader.py")
 main_menu(topics)
