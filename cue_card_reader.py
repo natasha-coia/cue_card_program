@@ -16,8 +16,11 @@ def read_cue_card(line):
     return front, back
 
 
-def read_cuecard_set():
+def read_cuecard_set(topics):
     topic_name = input("Enter name of first set of cuecards: ")
+    if topic_name not in topics:
+        print("Invalid topic name.")
+        return
     topic_name = topic_name + ".txt"
     topic = open(topic_name,'r') #opens the file of cue cards relating to topic to read
     lines = topic.readlines()   #creates a list containing each line in the file
@@ -38,8 +41,13 @@ def read_cuecard_set():
     return
 
 
-def add_cuecards(edit_type):
+def add_cuecards(topics, edit_type):
     topic_name = input("Please enter the Topic Name: ")
+    if topic_name not in topics and edit_type == "a":
+        print("Invalid topic name.")
+        return
+    elif topic_name not in topics and edit_type == "w":
+        topics.append(topic_name)
     topic_name = topic_name + ".txt"
     topic = open(topic_name, edit_type)
     numcards = int(input("How many cuecards do you want to add? "))
@@ -61,40 +69,54 @@ def add_cuecards(edit_type):
     print("Cue Card set finished.")
     topic.close()
     return
-        
     
-def delete_set():
+def delete_set(topics):
     topic_name = input("Please enter the Topic to be deleted: ")
+    if topic_name not in topics:
+        print("Invalid topic name.")
+        return
     topic_name = topic_name + ".txt"
     os.remove(topic_name)
+    topics.remove(topic_name)
     print("\n" + topic_name + " has been deleted.\n")
     return
 
-def main_menu():
+def print_topics(topics):
+    print("Existing topics: \n")
+    for i in range(len(topics)):
+        print("     - " + topics[i] + "\n")
+    return
+
+def main_menu(topics):
     print("Select command from following list by entering the associated number/letter:")
     print("     1. Read a set of cuecards")
     print("     2. Add a new set of cuecards")
     print("     3. Add to an existing set of cuecards")
     print("     4. Delete a set of cuecards")
+    print("     5. View existing topics")
     print("     X. Exit program")
     menu_choice = input()
     if menu_choice == "1":
-        read_cuecard_set()
-        main_menu()
+        read_cuecard_set(topics)
+        main_menu(topics)
     elif menu_choice == "2":
-        add_cuecards("w")
-        main_menu()
+        add_cuecards(topics,"w")
+        main_menu(topics)
     elif menu_choice == "3":
-        add_cuecards("a")
-        main_menu()
+        add_cuecards(topics,"a")
+        main_menu(topics)
     elif menu_choice == "4":
-        delete_set()
-        main_menu()
+        delete_set(topics)
+        main_menu(topics)
+    elif menu_choice == "5":
+        print_topics(topics)
+        main_menu(topics)
     elif menu_choice == "X" or menu_choice == "x":
         print("Thank you for using this program")
         return
     else:
         print("The option you entered was invalid, please try again:")
-        main_menu()
+        main_menu(topics)
 
-main_menu()
+topics = ["topic01","topic02"]
+main_menu(topics)
